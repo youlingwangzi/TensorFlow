@@ -9,6 +9,9 @@ sess = tf.Session()
 
 print(sess.run(hello))
 
+with tf.Session() as sess:
+    print(sess.run(hello))
+
 
 def add(param, param1):
     return param + param1
