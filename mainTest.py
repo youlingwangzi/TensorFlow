@@ -15,3 +15,19 @@ def add(param, param1):
 
 
 print(add(16, 87))
+
+names = ['yuanxiaokun', 'wangwenfu', 'wumengxinag', 'luojiawei', 123]
+
+for name in names:
+    print(name)
+
+
+def fun(n):
+    if n == 1:
+        return n
+    return n * fun(n - 1)
+
+
+print(fun(100))
+
+
