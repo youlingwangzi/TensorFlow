@@ -23,7 +23,9 @@ biases2 = -0.1
 a = tf.nn.relu(tf.matmul(x, w1) + biases1)
 y = tf.nn.relu(tf.matmul(a, w2) + biases2)
 
-# 损失函数，反向传播算法
+# 损失函数，反向传播算法，这里使用交叉熵
+# tf.clip_by_value()函数可以将张量中的数值限定在一定的范围内，避免数值运算错误
+# 注意区别 * 乘法和 tf.matmul()的矩阵乘法
 y = tf.sigmoid(y)
 cross_entropy = -tf.reduce_mean(
     y_ * tf.log(tf.clip_by_value(y, 1e-10, 1.0))
