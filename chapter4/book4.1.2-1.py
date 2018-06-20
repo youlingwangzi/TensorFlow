@@ -67,6 +67,7 @@ with tf.Session() as sess:
             )
             print("%d 次训练之后，所有数据的交叉熵是 %g" %(i, total_croee_entropy))
 
+    # 训练之后的参数集
     print(sess.run(w1))
     print(sess.run(w2))
 
