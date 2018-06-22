@@ -1,4 +1,4 @@
-# page72 加入偏置项和非线性激活函数的训练函数
+# page78 实现了softmax回归之后的经典损失函数
 
 import tensorflow as tf
 
@@ -28,7 +28,9 @@ y = tf.nn.relu(tf.matmul(a, w2) + biases2)
 # 注意区别 * 乘法和 tf.matmul()的矩阵乘法
 # tf.clip_by_value函数可以控制矩阵值在一定的安全范围内
 y = tf.sigmoid(y)
-cross_entropy = -tf.reduce_mean(
+# cross_entropy = -tf.reduce_mean(
+# 替换为使用softmax回归之后的交叉熵
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
     y_ * tf.log(tf.clip_by_value(y, 1e-10, 1.0))
     + (1-y)*tf.log(tf.clip_by_value(1-y, 1e-10, 1.0))
 )
