@@ -36,8 +36,8 @@ with tf.Session() as sess:
     STEPS = 5000
     for i in range(STEPS):
         start = (i*batch_size) % dataset_size
-        end = (i*batch_size) % 128 + batch_size
-        #end = min(start+batch_size, dataset_size)
+        # end = (i*batch_size) % 128 + batch_size
+        end = min(start+batch_size, dataset_size)
         sess.run(train_step,
                  feed_dict={x: X[start:end], y_: Y[start:end]})
         if i % 1000 == 0:
@@ -45,7 +45,6 @@ with tf.Session() as sess:
     print("Final:\n", sess.run(w1))
 
 '''
-C:\Users\yuanx\AppData\Local\Programs\Python\Python36\python.exe C:/Users/yuanx/Documents/Code/Python/TensorFlow/chapter4/book4.2.2-2.py
 2018-06-23 01:37:29.915381: I T:\src\github\tensorflow\tensorflow\core\platform\cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2
 [[-0.81131774]
  [ 1.4845992 ]]
@@ -64,4 +63,10 @@ Final:
 Process finished with exit code 0
 
 输出与书上预期不太一致。为什么？
+
+书上的结果如下：
+w1最终的值为：
+[1.01934695, 1.04280889]
+在loss_more为10，loss_less为1的情况下，w1的值为：
+[0.95525807, 0.9813394]
 '''
