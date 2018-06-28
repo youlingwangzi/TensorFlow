@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 data = []
-label = []
+label1 = []
 np.random.seed(0)
 
 # 以原点为圆心，半径为1的圆把散点划分成红蓝两部分，并加入随机噪音。
@@ -14,17 +14,17 @@ for i in range(150):
     x2 = np.random.uniform(0, 2)
     if x1 ** 2 + x2 ** 2 <= 1:
         data.append([np.random.normal(x1, 0.1), np.random.normal(x2, 0.1)])
-        label.append(0)
+        label1.append(0)
     else:
         data.append([np.random.normal(x1, 0.1), np.random.normal(x2, 0.1)])
-        label.append(1)
+        label1.append(1)
 
 data = np.hstack(data).reshape(-1, 2)
-label = np.hstack(label).reshape(-1, 1)
+label = np.hstack(label1).reshape(-1, 1)
 # 画出数据图
-# plt.scatter(data[:, 0], data[:, 1], c=label,
-#             cmap="RdBu", vmin=-.2, vmax=1.2, edgecolor="white")
-# plt.show()
+plt.scatter(data[:, 0], data[:, 1], c=label1,
+            cmap="RdBu", vmin=-.2, vmax=1.2, edgecolor="white")
+plt.show()
 
 
 # 获取一层神经网络边上的权重，并将这个权重的L2正则化损失加入名为“losses”的集合中
@@ -88,15 +88,15 @@ with tf.Session() as sess:
             print("After %d steps, mse_loss: %f" % (i, sess.run(mse_loss, feed_dict={x: data, y_: label})))
 
     # 画出训练后的分割曲线
-    # xx, yy = np.mgrid[-1.2:1.2:.01, -0.2:2.2:.01]
-    # grid = np.c_[xx.ravel(), yy.ravel()]
-    # probs = sess.run(y, feed_dict={x: grid})
-    # probs = probs.reshape(xx.shape)
+    xx, yy = np.mgrid[-1.2:1.2:.01, -0.2:2.2:.01]
+    grid = np.c_[xx.ravel(), yy.ravel()]
+    probs = sess.run(y, feed_dict={x: grid})
+    probs = probs.reshape(xx.shape)
 
-# plt.scatter(data[:, 0], data[:, 1], c=label,
-#             cmap="RdBu", vmin=-.2, vmax=1.2, edgecolor="white")
-# plt.contour(xx, yy, probs, levels=[.5], cmap="Greys", vmin=0, vmax=.1)
-# plt.show()
+plt.scatter(data[:, 0], data[:, 1], c=label1,
+            cmap="RdBu", vmin=-.2, vmax=1.2, edgecolor="white")
+plt.contour(xx, yy, probs, levels=[.5], cmap="Greys", vmin=0, vmax=.1)
+plt.show()
 
 
 # 定义训练的目标函数loss，训练次数及训练模型
@@ -111,15 +111,15 @@ with tf.Session() as sess:
             print("After %d steps, loss: %f" % (i, sess.run(loss, feed_dict={x: data, y_: label})))
 
     # 画出训练后的分割曲线
-    # xx, yy = np.mgrid[-1:1:.01, 0:2:.01]
-    # grid = np.c_[xx.ravel(), yy.ravel()]
-    # probs = sess.run(y, feed_dict={x:grid})
-    # probs = probs.reshape(xx.shape)
+    xx, yy = np.mgrid[-1:1:.01, 0:2:.01]
+    grid = np.c_[xx.ravel(), yy.ravel()]
+    probs = sess.run(y, feed_dict={x:grid})
+    probs = probs.reshape(xx.shape)
 
-# plt.scatter(data[:,0], data[:,1], c=label,
-#            cmap="RdBu", vmin=-.2, vmax=1.2, edgecolor="white")
-# plt.contour(xx, yy, probs, levels=[.5], cmap="Greys", vmin=0, vmax=.1)
-# plt.show()
+plt.scatter(data[:,0], data[:,1], c=label1,
+           cmap="RdBu", vmin=-.2, vmax=1.2, edgecolor="white")
+plt.contour(xx, yy, probs, levels=[.5], cmap="Greys", vmin=0, vmax=.1)
+plt.show()
 
 
 '''

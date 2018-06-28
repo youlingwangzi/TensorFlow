@@ -45,54 +45,21 @@
 因此为了避免过拟合问题，常常会将损失函数 `正则化` 。具体可见Page88。
 程序 `book4.4.2-1` 和 `book4.4.2-2` 分别给出了完整的正则化训练过程和单独正则化函数的程序。
 
-### 示例程序
+程序 `book4.4.2-3` 给出了使用了 `集合` 的完成的损失函数正则化训练过程，并通过生成对比图给出了正则化和非正则化的损失函数的训练结果的不同。
 
-```python
-import tensorflow as tf
-from numpy.random import RandomState
+训练结果图如下：
 
-# 每次读取一小部分数据的大小
-batch_size = 8
+![未正则化的损失函数训练结果](out/img/book4.4.2-3-img2.png)
 
-# 每次读取一小部分数据作为训练数据执行反向传播算法
-x = tf.placeholder(tf.float32, shape=(batch_size, 2), name="x-input")
-y_ = tf.placeholder(tf.float32, shape=(batch_size, 1), name="y-input")
+- 未正则化的损失函数训练结果↑
 
-# 定义一个简单加权和的单层神经网络前向传播过程
-w1 = tf.Variable(tf.random_normal([2, 1], stddev=1, seed=1))
-y = tf.matmul(x, w1)
+![正则化的损失函数训练结果](out/img/book4.4.2-3-img3.png)
 
-# 定义神经网络结构和优化算法
-loss_less = 10
-loss_more = 1
-loss = tf.reduce_sum(tf.where(tf.greater(y, y_),
-                              (y - y_) * loss_more,
-                              (y_ - y) * loss_less))
-train_step = tf.train.AdadeltaOptimizer(0.001).minimize(loss)
+- 正则化的损失函数训练结果↑
 
-# 通过随机数生成一个模拟数据集
-rdm = RandomState(1)
-dataset_size = 128
-X = rdm.rand(dataset_size, 2)
-Y = [[x1 + x2 + rdm.rand()/10.0 - 0.05] for (x1, x2) in X]
+## 神经网络训练大致步骤
 
-# 训练神经网络
-with tf.Session() as sess:
-    init_op = tf.global_variables_initializer()
-    sess.run(init_op)
-    STEPS = 5000
-    for i in range(STEPS):
-        start = (i*batch_size) % dataset_size
-        # end = (i*batch_size) % 128 + batch_size
-        end = min(start+batch_size, dataset_size)
-        sess.run(train_step,
-                 feed_dict={x: X[start:end], y_: Y[start:end]})
-        if i % 1000 == 0:
-            print(sess.run(w1))
-    print("Final:\n", sess.run(w1))
-```
-
-即大致有以下步骤：
+在程序中大致有以下步骤：
 
 1. 每次读取小部分驯良数据执行反向传播算法
 
@@ -102,4 +69,3 @@ with tf.Session() as sess:
     
     - 参数初始化
     - 迭代更新参数
-    
