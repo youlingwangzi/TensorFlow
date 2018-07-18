@@ -16,6 +16,7 @@ REGULARAZTION_RATE = 0.0001  # 描述模型复杂度的正则化项在损失函�
 TRAINING_STEPS = 5000  # 训练轮数
 MOVING_AVERAGE_DECAY = 0.99  # 滑动平均衰减率
 
+
 # 定义函数计算前向传播结果
 # ================================================================================
 # 定义的辅助函数，给定神经网络的输入和所有参数，计算神经网络的前向传播结果。
@@ -33,6 +34,7 @@ def inference(input_tensor, avg_class, weights1, biases1, weights2, biases2):
         # 首先使用avg_class.average函数计算出变量的滑动平均值，然后参与前向传播计算
         layer1 = tf.nn.relu(tf.matmul(input_tensor, avg_class.average(weights1)) + avg_class.average(biases1))
         return tf.matmul(layer1, avg_class.average(weights2)) + avg_class.average(biases2)
+
 
 # 定义函数训练模型的过程
 # ==============================================================================================
@@ -138,4 +140,3 @@ After 3000 training step(s), validation accuracy using average model is 0.9834
 After 4000 training step(s), validation accuracy using average model is 0.9838 
 After 5000 training step(s), test accuracy using average model is 0.9819
 '''
-
